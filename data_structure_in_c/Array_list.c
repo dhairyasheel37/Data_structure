@@ -3,24 +3,31 @@ int insertbegin(int* ,int* ,int ,int);
 int insertend(int* ,int* ,int ,int);
 int insert_at(int* , int, int*, int, int);
 int deletebegin(int* ,int* );
+int deleteend(int* ,int *);
+int delete_at(int* ,int *,int );
+int linear(int *a,int *,int);
+
 int main()
 {
     char choice;
-    printf("Enter the choice if insert at begin enter 'b', if insert at end enter 'e',\n if insert at specific position enter 's',:");
+    printf("Enter the choice if insert at begin enter 'b', if insert at end enter 'e',\n if insert at specific position enter 's',if delete at begin enter 'd',if delete at end enter 'E',if delete at spcific position 'A',if search enter the 's':");
     scanf("%c",&choice);
 
-    int max_size,r,e,sp,d;
+    int max_size,key,d;
     printf("Enter the max size :");
     scanf("%d",&max_size);
 
     int a[20],size,last_position,insert_element,i,n;
     printf("Enter the last position ");
     scanf("%d",&last_position);
-
-    for(i=0;i<last_position;i++)
+    if(last_position>0)
     {
-        scanf("%d",&a[i]);
+         for(i=0;i<last_position;i++)
+        {
+            scanf("%d",&a[i]);
+        }
     }
+
 
     int position;
 
@@ -30,18 +37,14 @@ int main()
     case 'b':
 	printf("enter the insert element :");
     scanf("%d",&insert_element);
-    r=insertbegin(a,&last_position,insert_element,max_size);
-    if(r==0)
+    d=insertbegin(a,&last_position,insert_element,max_size);
+    if(d==0)
     {
         printf("error");
     }
     else
     {
-
-        for(i=0;i<last_position;i++)
-        {
-            printf(" %d",a[i]);
-        }
+        printf("success");
     }
     break ;
 
@@ -50,18 +53,15 @@ int main()
     case 'e':
 	printf("enter the insert element :");
     scanf("%d",&insert_element);
-    e=insertend(a,&last_position,max_size,insert_element);
-    if(e == 0)
+    d=insertend(a,&last_position,max_size,insert_element);
+    if(d == 0)
     {
         printf("error");
     }
     else
     {
         printf("data is stored \n");
-        for(i=0;i<last_position;i++)
-        {
-            printf(" %d",a[i]);
-        }
+
     }
 
     break;
@@ -71,19 +71,16 @@ int main()
     		scanf("%d",&insert_element);
             printf("Enter the position :");
             scanf("%d",&position);
-            sp=insert_at(a,insert_element,&last_position,max_size,position);
+            d=insert_at(a,insert_element,&last_position,max_size,position);
 
-            if(sp == 0)
+            if(d == 0)
             {
                 printf("error");
             }
             else
             {
                 printf("data is stored \n");
-                for(i=0;i<last_position;i++)
-                {
-                    printf("%d ",a[i]);
-                }
+
             }
 	    break;
 	    //
@@ -97,29 +94,123 @@ int main()
 	else
 	{
 		printf("data is stored");
-		for(i=0;i<size-1;i++)
-                {
-                    printf("%d",a[i]);
-                }
 	}
 	break;
 
 
+
+    case 'E':
+        d=deleteend(a,&last_position);
+        if(d==0)
+        {
+            printf("error");
+        }
+        else
+        {
+            printf("success");
+        }
+        break;
+
+
+
+    case 'A':
+        printf("Enter the position :");
+        scanf("%d",&position);
+        d = delete_at(a,&last_position,position);
+        if(d==0)
+        {
+            printf("error");
+        }
+        else
+        {
+            printf("success");
+        }
+        break;
+
+
+
+    case 'S':
+        printf("Enter the position :");
+        scanf("%d",&key);
+        d= linear(a,&last_position,key);
+        if(d<=0)
+        {
+            printf("error");
+        }
+        else
+        {
+            printf("The search element %d",d + 1);
+            printf("\n");
+        }
     }
 
-
-    //insert end
-    /*int position;
-    printf("Enter the position :");
-    scanf("%d",&position);*/
+    if(d>0)
+    {
+        for(i=0;i<last_position;i++)
+        {
+            printf("%d ",a[i]);
+        }
+    }
 
 
 
 }
 
+int linear(int *a,int *n,int key){
+    int I;
 
 
 
+    for(I=0;I<n;I++){
+        if(a[I]==key){
+            return I;
+        }
+    }
+
+     return -1;
+}
+
+
+
+int delete_at(int *a ,int *last_position,int position)
+{
+    if(*last_position == -1)
+    {
+        return 0;
+    }
+    else
+    {
+        int i;
+        if(position >=0 && position <= *last_position)
+        {
+            for(i=position;i<*last_position;i++)
+            {
+                a[i]=a[i+1];
+            }
+            *last_position -= 1;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
+
+
+
+int deleteend(int *a,int *last_position)
+{
+    if(*last_position == -1)
+    {
+        return 0;
+    }
+    else
+    {
+        *last_position -=1;
+        return 1;
+    }
+}
 
 
 
@@ -204,8 +295,6 @@ int deletebegin(int *a, int *last_position)
 		for(i=0;i<*last_position;i++)
 		{
 			a[i]=a[i+1];
-
-
 
 		}
 	        *last_position--;
