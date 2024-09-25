@@ -67,9 +67,10 @@ int pop(struct stack *s)
     if( s -> top == -1)
     {
         printf("\n stack is empty");
-        return NULL;88i
+        return 0;
     }
     data = s-> a[s->top];
     s -> top--;
     return data;
 }
+
